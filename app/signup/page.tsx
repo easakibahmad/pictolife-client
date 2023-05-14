@@ -1,29 +1,91 @@
+"use client";
 import "../globals.css";
 import { AiFillFacebook } from "react-icons/ai";
 import Link from "next/link";
-import { Metadata } from "next";
-// import { useState } from "react";
-export const metadata: Metadata = {
-  title: "Signup | Pictolife",
-};
+import { useState } from "react";
+
 export default function Page() {
-  // const [values, setValues] = useState({
-  //   email: "",
-  //   name: "",
-  //   username: "",
-  //   password: "",
-  // });
-  // const [errors, setErrors] = useState({
-  //   email: "",
-  //   name: "",
-  //   username: "",
-  //   password: "",
-  // });
+  const [values, setValues] = useState({
+    email: "",
+    name: "",
+    username: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    email: "",
+    name: "",
+    username: "",
+    password: "",
+  });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setValues((prevValues) => ({ ...prevValues, [name]: value }));
+
+    if (name === "email") {
+      // Check if email is valid
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      if (!emailRegex.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: "Invalid email address",
+        }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+      }
+    } else if (name === "username") {
+      // Check if username is a lowercase English word or number, with 3-10 characters
+      const usernameRegex = /^[a-z0-9]{3,10}$/;
+      if (!usernameRegex.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          username:
+            "Username must be a lowercase English word or number, with 3-10 characters",
+        }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, username: "" }));
+      }
+    } else if (name === "name") {
+      // Check if name has at least two words
+      const nameWords = value.split(" ");
+      if (nameWords.length < 2) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          name: "Full name should have at least two words",
+        }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, name: "" }));
+      }
+    } else if (name === "password") {
+      // Check if password has at least 6 characters and one lowercase and one uppercase letter
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/;
+      if (!passwordRegex.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          password:
+            "Password must be at least 6 characters and contain one lowercase and one uppercase letter",
+        }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
+      }
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (errors.email || errors.name || errors.username || errors.password) {
+      return;
+    }
+    console.log(values);
+  };
+
   return (
-    <div className="my-8  bg-white grid grid-cols-1">
+    <div className="my-8 bg-white grid grid-cols-1">
       <div className="lg:w-3/12 w-4/6 mx-auto border pt-12 pb-8">
         <h1 className="text-center text-3xl mb-10">Pictolife</h1>
-        <form action="" className="grid grid-cols-1 md:px-6 px-3 gap-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:px-6 px-3 gap-4"
+        >
           <button className="text-blue-600 flex justify-center items-center ">
             <span className="text-xl mr-2">
               <AiFillFacebook></AiFillFacebook>
@@ -36,24 +98,44 @@ export default function Page() {
             {" "}
             <input
               type="text"
-              placeholder="Mobile number or email address"
+              placeholder="Email address"
               className="focus:outline-none focus:border-blue-300 border w-full py-1 px-2"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
             />
+            {errors.email && <p className="text-red-500">{errors.email}</p>}
             <input
               type="text"
               placeholder="Full Name"
               className="focus:outline-none focus:border-blue-300 border w-full py-1 px-2"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
             />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}
             <input
               type="text"
               placeholder="Username"
               className="focus:outline-none focus:border-blue-300 border w-full py-1 px-2"
+              name="username"
+              value={values.username}
+              onChange={handleChange}
             />
+            {errors.username && (
+              <p className="text-red-500">{errors.username}</p>
+            )}
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               className="focus:outline-none focus:border-blue-300 border w-full py-1 px-2"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
             />
+            {errors.password && (
+              <p className="text-red-500">{errors.password}</p>
+            )}
           </div>
           <button
             type="submit"
