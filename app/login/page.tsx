@@ -1,12 +1,15 @@
 import "../globals.css";
 import { AiFillFacebook } from "react-icons/ai";
 import Link from "next/link";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Login | Pictolife",
+};
 export default function Page() {
   return (
     <div className="my-8  bg-white grid grid-cols-1">
       <div className="lg:w-3/12 w-4/6 mx-auto border pt-12 pb-8">
-        <h1 className="text-center text-3xl mb-10">Smartgram</h1>
+        <h1 className="text-center text-3xl mb-10">Pictolife</h1>
         <form action="" className="grid grid-cols-1 md:px-6 px-3 gap-6">
           <div className="grid grid-cols-1 gap-3">
             {" "}

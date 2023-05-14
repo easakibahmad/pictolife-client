@@ -1,6 +1,10 @@
 import Carousel from "@/components/Carousel";
 import HomeCard from "@/components/HomeCard";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Home | Pictolife",
+};
 export default function Page() {
   return (
     <div className="my-10 grid grid-cols-8">

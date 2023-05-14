@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Home from "./home/page";
 export const metadata: Metadata = {
-  title: "Home: Smartgram",
+  title: "Home | Pictolife",
 };
 export default function Page() {
   return (
