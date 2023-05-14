@@ -1,7 +1,6 @@
 import '../globals.css';
 import {AiFillFacebook } from 'react-icons/ai';
-
-
+import Link from 'next/link';
 
 export default function Page() {
   return (
@@ -22,7 +21,7 @@ export default function Page() {
         </form>
           </div>
           <div className='lg:w-3/12 flex  mx-auto px-6 py-4 items-center justify-center mt-4 w-4/6 border'>
-              <p className='text-center text-sm'>Have an account? <span className="text-blue-400 font-bold">Log in</span></p>
+              <p className='text-center text-sm'>Have an account? <Link href="/login" className="text-blue-400 font-bold">Log in</Link></p>
           </div>
     </div>
   );
