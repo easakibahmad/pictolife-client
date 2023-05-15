@@ -9,6 +9,7 @@ import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
 export default function Page() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [values, setValues] = useState({
     email: "",
@@ -82,13 +83,42 @@ export default function Page() {
     }
 
     try {
+      if (values.email === "") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: "email is required",
+        }));
+        return;
+      }
+      if (values.name === "") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          name: "Username is required",
+        }));
+        return;
+      }
+      if (values.username === "") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          username: "Username is required",
+        }));
+        return;
+      }
+      if (values.password === "") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          password: "password is required",
+        }));
+        return;
+      }
+      setIsLoading(true);
       const response = await axios.post(
         "http://localhost:5000/user/signin",
         values
       );
       console.log(response.data);
       if (response.data.success) {
-        console.log(response.data.success);
+        console.log(response.data.user);
         router.push("/dashboardHome");
       }
       // Handle the successful sign-in response
@@ -109,6 +139,8 @@ export default function Page() {
         }
       }
       console.error(error);
+    } finally {
+      setIsLoading(false); // Set loading state back to false
     }
   };
 
@@ -188,8 +220,9 @@ export default function Page() {
           <button
             type="submit"
             className="bg-blue-500 font-bold text-white py-1 px-2"
+            disabled={isLoading}
           >
-            Sign up
+            {isLoading ? "Loading..." : "Sign up"}
           </button>
         </form>
       </div>
