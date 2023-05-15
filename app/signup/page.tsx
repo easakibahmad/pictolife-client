@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
 export default function Page() {
   const router = useRouter();
@@ -111,6 +112,11 @@ export default function Page() {
     }
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   return (
     <div className="my-8 bg-white grid grid-cols-1">
       <div className="lg:w-3/12 w-4/6 mx-auto border pt-12 pb-8">
@@ -158,14 +164,23 @@ export default function Page() {
             {errors.username && (
               <p className="text-red-500">{errors.username}</p>
             )}
-            <input
-              type="password"
-              placeholder="Password"
-              className="focus:outline-none focus:border-blue-300 border w-full py-1 px-2"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className="focus:outline-none focus:border-blue-300 border border-r-none w-full py-1 px-2"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+              />
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+              </button>
+            </div>
             {errors.password && (
               <p className="text-red-500">{errors.password}</p>
             )}
