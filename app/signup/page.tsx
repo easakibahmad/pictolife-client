@@ -3,8 +3,12 @@ import "../globals.css";
 import { AiFillFacebook } from "react-icons/ai";
 import Link from "next/link";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
+
   const [values, setValues] = useState({
     email: "",
     name: "",
@@ -70,12 +74,41 @@ export default function Page() {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (errors.email || errors.name || errors.username || errors.password) {
       return;
     }
-    console.log(values);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/user/signin",
+        values
+      );
+      console.log(response.data);
+      if (response.data.success) {
+        console.log(response.data.success);
+        router.push("/dashboardHome");
+      }
+      // Handle the successful sign-in response
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        const { email, username } = error.response.data;
+        if (email) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            email: email,
+          }));
+        }
+        if (username) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            username: username,
+          }));
+        }
+      }
+      console.error(error);
+    }
   };
 
   return (
