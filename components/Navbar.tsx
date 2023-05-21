@@ -1,6 +1,15 @@
+"use client";
 import Link from "next/link";
+import { useState } from "react";
+import Modal from "./Modal";
 
 export default function Navbar() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="pl-7 fixed top-0">
       <div className="grid grid-cols-1 gap-6 h-screen">
@@ -12,7 +21,9 @@ export default function Navbar() {
           <Link href="/dashboardHome/home">Reels</Link>
           <Link href="/dashboardHome/home">Messages</Link>
           <Link href="/dashboardHome/home">Notifications</Link>
-          <Link href="/dashboardHome/home">Create</Link>
+          <p onClick={() => setIsModalOpen(true)}>Create</p>
+          {isModalOpen && <Modal onClose={handleCloseModal} />}
+
           <Link href="/dashboardHome/home">Profile</Link>
         </div>
         <p className="my-auto">Menu</p>
